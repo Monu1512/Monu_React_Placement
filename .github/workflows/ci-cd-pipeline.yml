@@ -3,9 +3,15 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
+      - dev
+      - qa
+      - next
       - main
   pull_request:
     branches:
+      - dev
+      - qa
+      - next
       - main
 
 jobs:
@@ -16,7 +22,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set Up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -24,17 +30,33 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Project
+      - name: Build Application
         run: npm run build
+
+      - name: Show Environment
+        run: |
+          echo "Branch name: $GITHUB_REF_NAME"
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
-    
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    environment:
+      name: ${{ github.ref_name }}
 
-      - name: Deployment Placeholder
-        run: echo "Deploy step will be added later"
+    steps:
+      - name: Deploy to DEV
+        if: github.ref_name == 'dev'
+        run: echo "Deploying to DEV environment"
+
+      - name: Deploy to QA
+        if: github.ref_name == 'qa'
+        run: echo "Deploying to QA environment"
+
+      - name: Deploy to NEXT
+        if: github.ref_name == 'next'
+        run: echo "Deploying to NEXT (staging) environment"
+
+      - name: Deploy to PROD
+        if: github.ref_name == 'main'
+        run: echo "Deploying to PRODUCTION environment"
