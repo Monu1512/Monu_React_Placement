@@ -31,6 +31,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
 
+  QA:
+    needs: QA
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
