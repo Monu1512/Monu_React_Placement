@@ -44,6 +44,6 @@ jobs:
         if: github.ref == 'refs/heads/next'
         run: echo "🚀 Deploying to NEXT environment"
 
-      - name: Deploy to PRODUCTION
-        if: github.ref == 'refs/heads/main'
-        run: echo "🚀 Deploying to PRODUCTION environment"
+      - name: Deploy to PROD
+        if: github.ref_name == 'main'
+        run: echo "Deploying to PRODUCTION environment"
